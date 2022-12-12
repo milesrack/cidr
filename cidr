@@ -1,0 +1,19 @@
+#!/bin/bash
+mask=0
+#subnet=$(ifconfig enp3s0 | grep -oE "netmask ([0-9]{1,3}\.?)+" | cut -d ' ' -f 2)
+IFS="." read -ra arr <<< "$1"
+for i in "${arr[@]}"
+do
+	bin=$(echo -n $bin; echo "obase=2;$i" | bc)
+done
+for ((i=0; i<${#bin}; i++))
+do
+	if [ "${bin:$i:1}" == "1" ]
+	then
+		((mask++))
+	else
+		echo /$mask
+		exit
+	fi
+done
+echo /$mask
